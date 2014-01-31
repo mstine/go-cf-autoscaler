@@ -13,24 +13,26 @@ Current State
 -------------
 
 * Looks for an AMQP URI in environment variable `VCAP_SERVICES`:
-	```
-	{
-	    "cloudamqp-n/a": [
-	        {
-	            "credentials": {
-	                "uri": "amqp://user:********@green-skunk.rmq.cloudamqp.com/xweijkex"
-	            }, 
-	            "label": "cloudamqp-n/a", 
-	            "name": "cloudamqp-autoscale", 
-	            "plan": "bunny", 
-	            "tags": [
-	                "amqp", 
-	                "rabbitmq"
-	            ]
-	        }
-	    ]
-	}
-	```
+
+```
+{
+    "cloudamqp-n/a": [
+        {
+            "credentials": {
+                "uri": "amqp://user:********@green-skunk.rmq.cloudamqp.com/xweijkex"
+            }, 
+            "label": "cloudamqp-n/a", 
+            "name": "cloudamqp-autoscale", 
+            "plan": "bunny", 
+            "tags": [
+                "amqp", 
+                "rabbitmq"
+            ]
+        }
+    ]
+}
+```
+
 * Get it: `go get github.com/mstine/go-cf-autoscaler`
 * Build it: `go install`
 * Run the producer: `go-cf-autoscaler p`
