@@ -1,26 +1,19 @@
 package worker
 
 import (
+	"github.com/mstine/go-cf-autoscaler/util"
 	"github.com/streadway/amqp"
 	"log"
 	"os"
-	"fmt"
 )
 
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-		panic(fmt.Sprintf("%s: %s", msg, err))
-	}
-}
-
-func Run() {
-	conn, err := amqp.Dial("amqp://localhost:5672")
-	failOnError(err, "Failed to connect to RabbitMQ")
+func Run(uri string) {
+	conn, err := amqp.Dial(uri)
+	util.FailOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
 	ch, err := conn.Channel()
-	failOnError(err, "Failed to open a channel")
+	util.FailOnError(err, "Failed to open a channel")
 
 	defer ch.Close()
 
@@ -32,10 +25,10 @@ func Run() {
 		false,   // noWait
 		nil,     // arguments
 	)
-	failOnError(err, "Failed to declare a queue")
+	util.FailOnError(err, "Failed to declare a queue")
 
 	msgs, err := ch.Consume(q.Name, "", true, false, false, false, nil)
-	failOnError(err, "Failed to register a consumer")
+	util.FailOnError(err, "Failed to register a consumer")
 
 	done := make(chan bool)
 

@@ -5,6 +5,7 @@ import (
 	"github.com/codegangsta/cli"
 	"github.com/mstine/go-cf-autoscaler/producer"
 	"github.com/mstine/go-cf-autoscaler/worker"
+	"github.com/mstine/go-cf-autoscaler/cf"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 			ShortName: "p",
 			Usage: "Run the Producer process",
 			Action: func(c *cli.Context) {
-				producer.Run()
+				producer.Run(cf.SingleAmqpUri())
 			},
 		},
 		{
@@ -25,7 +26,15 @@ func main() {
 			ShortName: "w",
 			Usage: "Run the Worker process",
 			Action: func(c *cli.Context) {
-				worker.Run()
+				worker.Run(cf.SingleAmqpUri())
+			},
+		},
+		{
+			Name: "service",
+			ShortName: "s",
+			Usage: "Print the bound service URI",
+			Action: func(c *cli.Context) {
+				cf.SingleAmqpUri()
 			},
 		},
 	}

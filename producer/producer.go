@@ -2,25 +2,19 @@ package producer
 
 import (
 	"fmt"
+	"github.com/mstine/go-cf-autoscaler/util"
 	"github.com/streadway/amqp"
 	"log"
 	"os"
 )
 
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-		panic(fmt.Sprintf("%s: %s", msg, err))
-	}
-}
-
-func Run() {
-	connection, err := amqp.Dial("amqp://localhost:5672")
-	failOnError(err, "Failed to connect to RabbitMQ")
+func Run(uri string) {
+	connection, err := amqp.Dial(uri)
+	util.FailOnError(err, "Failed to connect to RabbitMQ")
 	defer connection.Close()
 
 	channel, err := connection.Channel()
-	failOnError(err, "Failed to open a channel")
+	util.FailOnError(err, "Failed to open a channel")
 	defer channel.Close()
 
 	q, err := channel.QueueDeclare(
@@ -31,7 +25,7 @@ func Run() {
 		false,   // noWait
 		nil,     // arguments
 	)
-	failOnError(err, "Failed to declare a queue")
+	util.FailOnError(err, "Failed to declare a queue")
 
 	for i := 1;; i++ {
 		body := fmt.Sprintf("This is message #%v", i)
@@ -46,7 +40,7 @@ func Run() {
 			ContentType:     "text/plain",
 			Body:            []byte(body),
 		})
-		failOnError(err, "Failed to publish a message")
+		util.FailOnError(err, "Failed to publish a message")
 	}	
 
 	os.Exit(0)
