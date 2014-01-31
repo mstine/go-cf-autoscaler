@@ -9,7 +9,8 @@ This project is major WIP! I am attempting to port my Java/Spring [cf-autoscaler
 
 Stay tuned for more goodness.
 
-== Current State
+Current State
+-------------
 
 * Hardcoded to connect to a local RabbitMQ instance
 * Get it: `go get github.com/mstine/go-cf-autoscaler`
