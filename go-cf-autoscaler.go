@@ -19,7 +19,7 @@ func main() {
 			ShortName: "p",
 			Usage: "Run the Producer process",
 			Action: func(c *cli.Context) {
-				producer.Run(cf.SingleAmqpUri())
+				producer.Run(cf.SingleUri("cloudamqp-n/a"))
 			},
 		},
 		{
@@ -27,15 +27,16 @@ func main() {
 			ShortName: "w",
 			Usage: "Run the Worker process",
 			Action: func(c *cli.Context) {
-				worker.Run(cf.SingleAmqpUri())
+				worker.Run(cf.SingleUri("cloudamqp-n/a"))
 			},
 		},
 		{
 			Name: "service",
 			ShortName: "s",
-			Usage: "Print the bound service URI",
+			Usage: "Print the bound service URI for the provided service type",
 			Action: func(c *cli.Context) {
-				fmt.Println(cf.SingleAmqpUri())
+				serviceType := c.Args().First()
+				fmt.Println(cf.SingleUri(serviceType))
 			},
 		},
 	}
