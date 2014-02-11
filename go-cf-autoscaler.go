@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"github.com/codegangsta/cli"
 	"github.com/mstine/go-cf-autoscaler/producer"
@@ -34,7 +35,7 @@ func main() {
 			ShortName: "s",
 			Usage: "Print the bound service URI",
 			Action: func(c *cli.Context) {
-				cf.SingleAmqpUri()
+				fmt.Println(cf.SingleAmqpUri())
 			},
 		},
 	}

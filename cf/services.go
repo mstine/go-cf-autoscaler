@@ -3,7 +3,6 @@ package cf
 import (
 	"encoding/json"
 	"os"
-	"fmt"
 	"github.com/mstine/go-cf-autoscaler/util"
 )
 
@@ -26,19 +25,23 @@ import (
 }
 */
 
+type Credential struct {
+	Uri string `json:"uri"`
+}
+
+type Service struct {
+	Credentials Credential `json:"credentials"`
+}
+
+type AmqpServices struct {
+	Services []Service `json:"cloudamqp-n/a"`
+}
+
 func SingleAmqpUri() string {
 	servicesJson := []byte(os.Getenv("VCAP_SERVICES"))
-	var services interface{}
+	var services AmqpServices
 	err := json.Unmarshal(servicesJson, &services)
 	util.FailOnError(err, "Failed to unmarshal VCAP_SERVICES")
-
-	servicesMap := services.(map[string]interface{})
-
-	cloudamqpArray := servicesMap["cloudamqp-n/a"].([]interface{})
-	cloudamqpService := cloudamqpArray[0].(map[string]interface{})
-	credentials := cloudamqpService["credentials"].(map[string]interface{})
-	uri := credentials["uri"].(string)
-
-	fmt.Printf("URI: %v", uri)
-	return uri
+	
+	return services.Services[0].Credentials.Uri
 }
